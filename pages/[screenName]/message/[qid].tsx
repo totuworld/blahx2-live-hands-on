@@ -20,23 +20,18 @@ interface Props {
   item: InMessage | null;
 }
 
-const ReplyHomePage: NextPage<Props> = function ({ userInfo, item: propsItem, host }) {
+const ReplyHomePage: NextPage<Props> = function ({ userInfo, item: propsItem }) {
   const { authUser } = useAuth();
   const [item, updateItem] = useState(propsItem);
 
   if (userInfo === null || item === null) {
     return <p>사용자를 찾을 수 없습니다.</p>;
   }
-  const imgUrl = encodeURIComponent(`${host}/open-graph-img?text=${encodeURIComponent(item.message)}`);
-  const fullImageURL = `${host}/api/thumbnail?path=${imgUrl}&colorScheme=light`;
   return (
     <>
       <Head>
-        <meta property="og:image" content={fullImageURL} />
-        <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@blahx2" />
         <meta name="twitter:title" content={propsItem?.message} />
-        <meta name="twitter:image" content={fullImageURL} />
       </Head>
       <ServiceLayout height="100vh" backgroundColor="gray.200">
         <Box maxW="md" mx="auto" pt="6">
