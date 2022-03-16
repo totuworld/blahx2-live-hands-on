@@ -10,7 +10,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (uid === undefined) {
     return res.status(400).send('uid가 없어요.');
   }
-  const colRef = FirebaseAdmin.getInstance().Firestore.collection('members').doc(uid).collection('messages');
+  const useUid = (() => {
+    if (Array.isArray(uid)) {
+      return uid[0];
+    }
+    return uid;
+  })();
+  const colRef = FirebaseAdmin.getInstance().Firestore.collection('members').doc(useUid).collection('messages');
   try {
     // 컬렉션 내 모든 문서 데이터를 읽음
     const colSnap = await colRef.get();
